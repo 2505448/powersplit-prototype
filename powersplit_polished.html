@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PowerSplit — Polished Prototype</title>
+<style>
+  :root{
+    --ink:#0F172A;         /* charcoal text */
+    --muted:#475569;       /* slate */
+    --bg:#F8FAFC;          /* soft background */
+    --card:#FFFFFF;        /* card surface */
+    --teal:#0EA5A4;        /* primary */
+    --indigo:#4F46E5;      /* secondary */
+    --amber:#F59E0B;       /* highlight */
+    --radius:18px;
+    --pad:18px;
+    --gap:18px;
+    --shadow: 0 6px 16px rgba(2,6,23,.08), 0 0 0 2px rgba(2,6,23,.05) inset;
+  }
+  *{box-sizing:border-box;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  body{margin:0;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  /* Header */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:linear-gradient(90deg, rgba(14,165,164,.10), rgba(79,70,229,.10));
+    backdrop-filter:saturate(140%) blur(4px);
+    border-bottom:1px solid rgba(2,6,23,.06);
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-weight:900;font-size:28px;letter-spacing:.2px}
+  nav a{margin:0 8px;padding:8px 12px;border-radius:999px}
+  nav a.active{background:#fff;border:1px solid rgba(2,6,23,.12);box-shadow:var(--shadow)}
+  /* Layout */
+  main{max-width:1120px;margin:20px auto;padding:0 18px}
+  section{display:none}
+  section.active{display:block}
+  .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  /* Components */
+  .btn{
+    border:2px solid var(--ink);background:#fff;color:var(--ink);
+    padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:800;
+    transition:transform .05s ease, box-shadow .15s ease;
+  }
+  .btn:hover{box-shadow:var(--shadow)}
+  .btn:active{transform:translateY(1px)}
+  .btn.primary{background:var(--teal);color:#fff;border-color:var(--ink)}
+  .btn.secondary{background:var(--indigo);color:#fff;border-color:var(--ink)}
+  .btn.warn{background:var(--amber);color:#111;border-color:var(--ink)}
+  .btn:focus-visible{outline:3px solid #fff;outline-offset:2px;box-shadow:0 0 0 4px rgba(14,165,164,.5)}
+  select,input[type=text]{border:2px solid var(--ink);border-radius:12px;padding:10px 12px;background:#fff}
+  .grid{display:grid;grid-template-columns:1fr 340px;gap:var(--gap)}
+  @media (max-width: 900px){
+    .grid{grid-template-columns:1fr}
+  }
+  .card{
+    background:var(--card);border:2px solid rgba(2,6,23,.10);border-radius:var(--radius);
+    padding:var(--pad);box-shadow:var(--shadow)
+  }
+  .card h2{margin:0 0 6px}
+  .muted{color:var(--muted)}
+  .progress{width:100%;height:44px;border:2px solid var(--ink);border-radius:999px;position:relative;background:#fff;overflow:hidden}
+  .progress .fill{position:absolute;left:0;top:0;height:100%;background:linear-gradient(90deg,var(--teal),var(--indigo));transition:width .3s}
+  .progress .marker{position:absolute;top:0;bottom:0;width:4px;background:#fff;left:60%}
+  ul.clean{list-style:none;margin:0;padding:0}
+  .aside .card{min-height:140px}
+  .kicker{font-weight:800;letter-spacing:.08em;font-size:12px;text-transform:uppercase;color:var(--muted)}
+  .hero{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+  @media (max-width: 900px){ .hero{grid-template-columns:1fr} }
+  .fake{border:2px dashed rgba(2,6,23,.25);border-radius:16px;height:220px;background:#f1f5f9}
+  /* modal */
+  .backdrop{position:fixed;inset:0;background:rgba(2,6,23,.35);display:none;align-items:center;justify-content:center}
+  .modal{background:#fff;border:2px solid var(--ink);border-radius:16px;width:96%;max-width:620px;padding:16px;box-shadow:var(--shadow)}
+  .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+  .pill{border:2px solid var(--ink);border-radius:999px;padding:6px 10px;display:inline-block;margin:4px;cursor:pointer;background:#fff}
+  .pill.active{background:var(--indigo);color:#fff}
+  .badge{display:inline-block;background:#E0F2FE;border:1px solid rgba(2,6,23,.2);padding:3px 8px;border-radius:999px;font-size:12px;margin-left:6px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">PowerSplit <span class="badge">Prototype</span></div>
+    <nav>
+      <a href="#explainer" id="nav-explainer">Explainer</a>
+      <a href="#storefront" id="nav-storefront">Storefront</a>
+      <a href="#helpdesk" id="nav-helpdesk">Helpdesk</a>
+      <a href="#account" id="nav-account">Account</a>
+      <a href="#dashboard" id="nav-dashboard">Dashboard</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- Explainer -->
+  <section id="explainer" class="active">
+    <div class="hero">
+      <div>
+        <div class="kicker">Fair energy for shared homes</div>
+        <h1 style="margin:0 0 8px">Pay only for the power you use.</h1>
+        <p class="muted">This is a polished version of the wireframe so markers can click through the full flow without back‑end code.</p>
+        <div class="row">
+          <a class="btn primary" href="#storefront">Get Starter Kit</a>
+          <a class="btn" href="#dashboard">Open Dashboard</a>
+        </div>
+      </div>
+      <div class="fake" aria-label="preview"></div>
+    </div>
+  </section>
+
+  <!-- Storefront -->
+  <section id="storefront">
+    <div class="grid">
+      <div class="card">
+        <h2>Starter Kit</h2>
+        <p class="muted">4 smart plugs + mains clamp + app demo. Good for a 3–5 person house.</p>
+        <div class="row">
+          <button class="btn primary" id="addToCart">Add to cart</button>
+          <button class="btn" id="viewCart">View cart (0)</button>
+          <button class="btn secondary" id="checkout">Checkout</button>
+        </div>
+      </div>
+      <div class="aside">
+        <div class="card">
+          <h2>Cart</h2>
+          <div id="cartBox" class="muted">Your cart is empty.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Helpdesk -->
+  <section id="helpdesk">
+    <div class="card">
+      <h2>Helpdesk</h2>
+      <p class="muted">Setup videos · FAQs · Warranty · Returns</p>
+      <div class="row"><button class="btn" onclick="openModal('contact')">Contact support</button></div>
+    </div>
+  </section>
+
+  <!-- Account -->
+  <section id="account">
+    <div class="grid">
+      <div class="card">
+        <h2>Create account</h2>
+        <div class="row"><input id="name" type="text" placeholder="Name"/><input id="email" type="text" placeholder="Email"/></div>
+        <div class="row" style="margin-top:8px"><button class="btn primary" id="createAcc">Create</button></div>
+      </div>
+      <div class="aside">
+        <div class="card">
+          <h2>Login</h2>
+          <div class="row"><input id="login" type="text" placeholder="Email"/></div>
+          <div class="row" style="margin-top:8px"><button class="btn secondary" id="loginBtn">Login</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard -->
+  <section id="dashboard">
+    <div class="row" style="margin-bottom:12px">
+      <div class="row">
+        <label class="muted">Property:&nbsp;</label>
+        <select id="property"></select>
+      </div>
+      <button class="btn" id="addDeviceBtn">Add device</button>
+    </div>
+
+    <div class="grid">
+      <div>
+        <div class="card">
+          <h2>Your share this month <span class="muted" style="float:right">£<span id="myShare">36.80</span></span></h2>
+          <div class="muted">People & amounts</div>
+          <div class="progress"><div class="fill" id="fill"></div><div class="marker"></div></div>
+          <div class="muted" style="margin-top:6px">Last month vs now: <span id="delta">+£3.20</span></div>
+          <div class="row" style="margin-top:8px"><button class="btn primary" id="settle">Settle up</button></div>
+        </div>
+
+        <div class="card">
+          <h2>Device insights</h2>
+          <ul id="devices" class="clean"></ul>
+        </div>
+      </div>
+
+      <div class="aside">
+        <div class="card">
+          <h2>Energy coach</h2>
+          <p id="tip" class="muted">Reduce heater to 19–20°C. Estimated saving: £4.50/mo.</p>
+          <button class="btn warn" id="applyTip">Apply tip</button>
+        </div>
+        <div class="card">
+          <h2>Household</h2>
+          <ul id="people" class="clean"></ul>
+          <button class="btn secondary" id="invite">Invite member</button>
+        </div>
+        <div class="card">
+          <h2>Export</h2>
+          <button class="btn" id="exportCsv">Export CSV</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Modal -->
+<div class="backdrop" id="backdrop">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <h3 id="mTitle">Modal</h3>
+    <div id="mBody" class="muted">Body</div>
+    <div class="actions">
+      <button class="btn" onclick="closeModal()">Close</button>
+      <button class="btn primary" id="mOk">OK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Simple state
+  const state = {
+    cart:0,
+    properties:[{id:'p1',name:'Flat 12, King Street'}],
+    active:'p1',
+    people:[{id:'u1',name:'You'},{id:'u2',name:'Sam'},{id:'u3',name:'Riley'}],
+    devices:[
+      {id:'d1',name:'Space heater',owner:'u1',shared:false,kwh:42},
+      {id:'d2',name:'PC / Monitor',owner:'u2',shared:false,kwh:20},
+      {id:'d3',name:'Fridge / Lights',owner:'shared',shared:true,kwh:30}
+    ],
+    myShare:36.80, prev:33.60
+  };
+
+  // Router
+  function setActive(hash){
+    if(!hash) hash='#explainer';
+    document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+    const nav = document.querySelector('#nav-'+hash.replace('#',''));
+    if(nav) nav.classList.add('active');
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    const sec = document.querySelector(hash);
+    if(sec) sec.classList.add('active');
+    if(hash==='#dashboard') renderDashboard();
+  }
+  window.addEventListener('hashchange',()=>setActive(location.hash));
+  setActive(location.hash);
+
+  // Storefront
+  document.getElementById('addToCart').onclick=()=>{
+    state.cart++; document.getElementById('viewCart').textContent='View cart ('+state.cart+')';
+    document.getElementById('cartBox').textContent=state.cart+' × Starter Kit';
+  };
+  document.getElementById('checkout').onclick=()=>openModal('checkout');
+  document.getElementById('viewCart').onclick=()=>openModal('cart');
+
+  // Account
+  document.getElementById('createAcc').onclick=()=>{ location.hash='#dashboard'; alert('Account created (demo).'); };
+  document.getElementById('loginBtn').onclick=()=>{ location.hash='#dashboard'; alert('Logged in (demo).'); };
+
+  // Dashboard render
+  function renderDashboard(){
+    const sel=document.getElementById('property');
+    sel.innerHTML=state.properties.map(p=>`<option value="${p.id}" ${p.id===state.active?'selected':''}>${p.name}</option>`).join('');
+    document.getElementById('myShare').textContent=state.myShare.toFixed(2);
+    const pct=Math.min(100,Math.max(5,(state.myShare/60)*100));
+    document.getElementById('fill').style.width=pct+'%';
+    const d=state.myShare-state.prev;
+    document.getElementById('delta').textContent=(d>=0?'+':'')+'£'+Math.abs(d).toFixed(2);
+    // devices
+    const ul=document.getElementById('devices'); ul.innerHTML='';
+    state.devices.forEach(dv=>{
+      const who=dv.shared?'Shared':(state.people.find(p=>p.id===dv.owner)||{}).name||'—';
+      const li=document.createElement('li'); li.style.margin='6px 0';
+      li.textContent = `${dv.name} — ${dv.kwh} kWh · ${who}`;
+      ul.appendChild(li);
+    });
+    // people
+    const ppl=document.getElementById('people'); ppl.innerHTML='';
+    state.people.forEach(p=>{ const li=document.createElement('li'); li.textContent=p.name; ppl.appendChild(li); });
+  }
+  renderDashboard();
+
+  // Actions
+  document.getElementById('settle').onclick=()=>openModal('settle');
+  document.getElementById('applyTip').onclick=()=>{ state.myShare = Math.max(0,state.myShare-4.5); renderDashboard(); alert('Tip applied (demo).'); };
+  document.getElementById('addDeviceBtn').onclick=()=>openModal('addDevice');
+  document.getElementById('invite').onclick=()=>openModal('invite');
+  document.getElementById('exportCsv').onclick=()=>{
+    const rows=[['Person','Amount (£)'],...state.people.map(p=>[p.name,(Math.random()*30+10).toFixed(2)])];
+    const csv=rows.map(r=>r.join(',')).join('\\n');
+    const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url; a.download='PowerSplit_statement.csv'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1500);
+  };
+
+  // Modal
+  const bd=document.getElementById('backdrop'), title=document.getElementById('mTitle'), body=document.getElementById('mBody'), ok=document.getElementById('mOk');
+  function closeModal(){ bd.style.display='none'; }
+  function openModal(kind){
+    bd.style.display='flex'; ok.onclick=closeModal;
+    if(kind==='checkout'){ title.textContent='Checkout (demo)'; body.textContent='No payment in this prototype.'; }
+    if(kind==='cart'){ title.textContent='Cart'; body.textContent= (state.cart||0)+' × Starter Kit'; }
+    if(kind==='settle'){ title.textContent='Settle up'; body.textContent='Mark this month as paid (demo).'; }
+    if(kind==='invite'){
+      const code=Math.random().toString(36).slice(2,8).toUpperCase();
+      title.textContent='Invite member'; body.innerHTML='Share code: <strong>'+code+'</strong>';
+    }
+    if(kind==='addDevice'){
+      title.textContent='Add device';
+      const peopleOpts=state.people.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+      body.innerHTML=`<input id="dvName" type="text" placeholder="Device name" style="width:100%;margin:6px 0" class="btn">
+      <div><span id="priv" class="pill active">Private</span><span id="sh" class="pill">Shared</span></div>
+      <div id="ownerWrap" class="row" style="margin-top:6px"><label>Owner:&nbsp;</label><select id="dvOwner" class="btn">${peopleOpts}</select></div>`;
+      setTimeout(()=>{
+        const priv=document.getElementById('priv'), sh=document.getElementById('sh');
+        priv.onclick=()=>{ priv.classList.add('active'); sh.classList.remove('active'); document.getElementById('ownerWrap').style.display='flex'; };
+        sh.onclick=()=>{ sh.classList.add('active'); priv.classList.remove('active'); document.getElementById('ownerWrap').style.display='none'; };
+      },0);
+      ok.textContent='Add'; ok.onclick=()=>{
+        const name=document.getElementById('dvName').value.trim()||'New device';
+        const shared=document.getElementById('sh').classList.contains('active');
+        const owner= shared ? 'shared' : (document.getElementById('dvOwner').value);
+        state.devices.push({id:'d'+(state.devices.length+1),name,owner,shared,kwh:Math.floor(Math.random()*25)+5});
+        closeModal(); renderDashboard();
+      };
+    }
+    if(kind==='contact'){ title.textContent='Contact support'; body.textContent='help@powersplit.example'; }
+  }
+</script>
+</body>
+</html>
