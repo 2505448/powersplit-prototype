@@ -1,330 +1,482 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>PowerSplit — Polished Prototype</title>
-<style>
-  :root{
-    --ink:#0F172A;         /* charcoal text */
-    --muted:#475569;       /* slate */
-    --bg:#F8FAFC;          /* soft background */
-    --card:#FFFFFF;        /* card surface */
-    --teal:#0EA5A4;        /* primary */
-    --indigo:#4F46E5;      /* secondary */
-    --amber:#F59E0B;       /* highlight */
-    --radius:18px;
-    --pad:18px;
-    --gap:18px;
-    --shadow: 0 6px 16px rgba(2,6,23,.08), 0 0 0 2px rgba(2,6,23,.05) inset;
-  }
-  *{box-sizing:border-box;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-  body{margin:0;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
-  a{color:inherit;text-decoration:none}
-  /* Header */
-  header{
-    position:sticky;top:0;z-index:50;
-    background:linear-gradient(90deg, rgba(14,165,164,.10), rgba(79,70,229,.10));
-    backdrop-filter:saturate(140%) blur(4px);
-    border-bottom:1px solid rgba(2,6,23,.06);
-  }
-  .wrap{max-width:1120px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;justify-content:space-between}
-  .brand{font-weight:900;font-size:28px;letter-spacing:.2px}
-  nav a{margin:0 8px;padding:8px 12px;border-radius:999px}
-  nav a.active{background:#fff;border:1px solid rgba(2,6,23,.12);box-shadow:var(--shadow)}
-  /* Layout */
-  main{max-width:1120px;margin:20px auto;padding:0 18px}
-  section{display:none}
-  section.active{display:block}
-  .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-  /* Components */
-  .btn{
-    border:2px solid var(--ink);background:#fff;color:var(--ink);
-    padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:800;
-    transition:transform .05s ease, box-shadow .15s ease;
-  }
-  .btn:hover{box-shadow:var(--shadow)}
-  .btn:active{transform:translateY(1px)}
-  .btn.primary{background:var(--teal);color:#fff;border-color:var(--ink)}
-  .btn.secondary{background:var(--indigo);color:#fff;border-color:var(--ink)}
-  .btn.warn{background:var(--amber);color:#111;border-color:var(--ink)}
-  .btn:focus-visible{outline:3px solid #fff;outline-offset:2px;box-shadow:0 0 0 4px rgba(14,165,164,.5)}
-  select,input[type=text]{border:2px solid var(--ink);border-radius:12px;padding:10px 12px;background:#fff}
-  .grid{display:grid;grid-template-columns:1fr 340px;gap:var(--gap)}
-  @media (max-width: 900px){
-    .grid{grid-template-columns:1fr}
-  }
-  .card{
-    background:var(--card);border:2px solid rgba(2,6,23,.10);border-radius:var(--radius);
-    padding:var(--pad);box-shadow:var(--shadow)
-  }
-  .card h2{margin:0 0 6px}
-  .muted{color:var(--muted)}
-  .progress{width:100%;height:44px;border:2px solid var(--ink);border-radius:999px;position:relative;background:#fff;overflow:hidden}
-  .progress .fill{position:absolute;left:0;top:0;height:100%;background:linear-gradient(90deg,var(--teal),var(--indigo));transition:width .3s}
-  .progress .marker{position:absolute;top:0;bottom:0;width:4px;background:#fff;left:60%}
-  ul.clean{list-style:none;margin:0;padding:0}
-  .aside .card{min-height:140px}
-  .kicker{font-weight:800;letter-spacing:.08em;font-size:12px;text-transform:uppercase;color:var(--muted)}
-  .hero{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
-  @media (max-width: 900px){ .hero{grid-template-columns:1fr} }
-  .fake{border:2px dashed rgba(2,6,23,.25);border-radius:16px;height:220px;background:#f1f5f9}
-  /* modal */
-  .backdrop{position:fixed;inset:0;background:rgba(2,6,23,.35);display:none;align-items:center;justify-content:center}
-  .modal{background:#fff;border:2px solid var(--ink);border-radius:16px;width:96%;max-width:620px;padding:16px;box-shadow:var(--shadow)}
-  .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
-  .pill{border:2px solid var(--ink);border-radius:999px;padding:6px 10px;display:inline-block;margin:4px;cursor:pointer;background:#fff}
-  .pill.active{background:var(--indigo);color:#fff}
-  .badge{display:inline-block;background:#E0F2FE;border:1px solid rgba(2,6,23,.2);padding:3px 8px;border-radius:999px;font-size:12px;margin-left:6px}
-</style>
+  <meta charset="utf-8" />
+  <title>PowerSplit Prototype — Fair Energy for Shared Homes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #020617;
+      --panel: #0b1120;
+      --panel-soft: #020617;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.16);
+      --accent-blue: #38bdf8;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: rgba(148, 163, 184, 0.6);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, #0f172a 0, #020617 50%, #020617 100%);
+      color: var(--text);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .shell {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    header {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-mark {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: conic-gradient(from 200deg, #22c55e, #38bdf8, #22c55e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #020617;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .brand-text span:first-child {
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .brand-text span:last-child {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    nav a {
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    nav a.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: #dcfce7;
+    }
+
+    main section {
+      display: none;
+    }
+    main section.active {
+      display: block;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .kicker {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-blue);
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(26px, 4vw, 34px);
+    }
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .hero-box {
+      background: var(--panel);
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      padding: 14px;
+    }
+
+    .fake-chart {
+      height: 90px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(56,189,248,0.3), rgba(34,197,94,0.4));
+      position: relative;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .fake-chart::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(to top, rgba(15,23,42,0.9), transparent 30%);
+    }
+    .fake-label {
+      position:absolute;
+      left:10px;
+      bottom:6px;
+      font-size:11px;
+      color:#e5e7f5;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      background: var(--accent-soft);
+      color: #bbf7d0;
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .card h2 {
+      margin: 0 0 6px;
+      font-size: 16px;
+    }
+
+    .muted { color: var(--muted); font-size: 13px; }
+
+    .steps, .clean {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .clean { list-style:none; padding-left:0; }
+    .steps li + li, .clean li + li { margin-top: 6px; }
+
+    .btn {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #020617;
+      color: var(--text);
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .btn.primary {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border-color: #16a34a;
+      color: #020617;
+    }
+
+    input[type="text"], select {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #020617;
+      color: var(--text);
+      font-size: 13px;
+      min-width: 0;
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .note {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .progress {
+      margin-top: 6px;
+      width: 100%;
+      height: 24px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #020617;
+      position: relative;
+      overflow: hidden;
+    }
+    .progress-fill {
+      position: absolute;
+      inset: 0;
+      width: 40%;
+      background: linear-gradient(90deg, #22c55e, #38bdf8);
+    }
+
+    @media (max-width: 800px) {
+      .hero, .grid-two {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <div class="brand">PowerSplit <span class="badge">Prototype</span></div>
-    <nav>
-      <a href="#explainer" id="nav-explainer">Explainer</a>
-      <a href="#storefront" id="nav-storefront">Storefront</a>
-      <a href="#helpdesk" id="nav-helpdesk">Helpdesk</a>
-      <a href="#account" id="nav-account">Account</a>
-      <a href="#dashboard" id="nav-dashboard">Dashboard</a>
-    </nav>
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <div class="brand-mark">PS</div>
+        <div class="brand-text">
+          <span>PowerSplit</span>
+          <span>Prototype interface</span>
+        </div>
+      </div>
+      <nav>
+        <a data-target="explainer" class="active">Explainer</a>
+        <a data-target="storefront">Storefront</a>
+        <a data-target="account">Account</a>
+        <a data-target="dashboard">Dashboard</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- EXPLAINER -->
+      <section id="explainer" class="active">
+        <div class="hero">
+          <div>
+            <div class="kicker">Prototype</div>
+            <h1>Fairly split energy bills in shared homes.</h1>
+            <p style="margin-bottom:10px;">
+              This prototype shows the core journey: understanding PowerSplit, buying a starter kit,
+              setting up a household account, and seeing a simple dashboard.
+            </p>
+            <div class="row" style="margin-bottom:8px;">
+              <button class="btn primary" onclick="goTo('storefront')">Go to Storefront</button>
+              <button class="btn" onclick="goTo('dashboard')">Skip to Dashboard</button>
+            </div>
+            <div class="row">
+              <span class="badge">Prototype — flows only, no real data</span>
+            </div>
+          </div>
+
+          <div class="hero-box">
+            <div class="muted" style="font-size:12px;margin-bottom:4px;">
+              Simple mock dashboard preview
+            </div>
+            <div><strong>Flat 12, King Street</strong></div>
+            <div class="muted" style="font-size:12px;">
+              Your share this month: <strong>£36.80</strong>
+            </div>
+            <div class="fake-chart">
+              <div class="fake-label">Your share trending down after adjusting heater usage</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>What this prototype focuses on</h2>
+          <ul class="steps">
+            <li>High-level explainer for students in shared flats.</li>
+            <li>Storefront for a physical “starter kit”.</li>
+            <li>Account creation and login views.</li>
+            <li>Simple dashboard to visualise a fair bill split.</li>
+          </ul>
+          <div class="note">
+            The final website adds more polish, animations and a cookie banner for compliance.
+          </div>
+        </div>
+      </section>
+
+      <!-- STOREFRONT -->
+      <section id="storefront">
+        <div class="grid-two">
+          <div>
+            <div class="card">
+              <h2>Starter Kit</h2>
+              <p>
+                Includes smart plugs, a mains clamp and access to the PowerSplit app.
+                Designed for 3–5 person flat-shares.
+              </p>
+              <div class="row" style="margin-top:10px;">
+                <button class="btn primary">Add to cart</button>
+                <button class="btn">View cart</button>
+              </div>
+              <div class="note">
+                In this prototype, buttons do not take payment; they show the basic purchase journey.
+              </div>
+            </div>
+
+            <div class="card">
+              <h2>Add-ons</h2>
+              <ul class="clean">
+                <li>Extra smart plug for more rooms/devices.</li>
+                <li>Replacement labels to keep ownership clear.</li>
+                <li>Optional analytics subscription in the final version.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div>
+            <div class="card">
+              <h2>Why this layout (prototype)</h2>
+              <p>
+                The storefront here is deliberately simple: one main product and a few add-ons,
+                so the tester can focus on understanding the concept rather than complex pricing.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACCOUNT -->
+      <section id="account">
+        <div class="grid-two">
+          <div>
+            <div class="card">
+              <h2>Create account</h2>
+              <p class="muted">
+                Create a household profile and invite your housemates.
+              </p>
+              <div class="row" style="margin-top:10px;">
+                <input type="text" placeholder="Full name" />
+                <input type="text" placeholder="Email" />
+              </div>
+              <div class="row" style="margin-top:10px;">
+                <button class="btn primary" onclick="goTo('dashboard')">Continue to dashboard (demo)</button>
+              </div>
+              <div class="note">
+                In the final site, this flow is expanded with clearer error states and privacy copy.
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="card">
+              <h2>Login</h2>
+              <p class="muted">
+                For this prototype, login is a simple text field that loads a sample dashboard.
+              </p>
+              <div class="row" style="margin-top:10px;">
+                <input type="text" placeholder="Email" />
+                <button class="btn">Login (demo)</button>
+              </div>
+              <div class="note">
+                This keeps the focus on the idea rather than real authentication.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DASHBOARD -->
+      <section id="dashboard">
+        <div class="card">
+          <h2>Dashboard — simple prototype</h2>
+          <p class="muted">
+            A basic view of how a fair split could look. The final design adds more detail and interaction.
+          </p>
+          <div class="row" style="margin-top:10px;margin-bottom:6px;">
+            <span class="muted" style="font-size:13px;">Property:</span>
+            <select>
+              <option>Flat 12, King Street</option>
+            </select>
+          </div>
+          <div class="progress">
+            <div class="progress-fill"></div>
+          </div>
+          <div class="note">
+            Your share this month: <strong>£36.80</strong> (approx.)  
+            In the final version this updates dynamically from real data.
+          </div>
+        </div>
+
+        <div class="grid-two">
+          <div>
+            <div class="card">
+              <h2>Devices (static list)</h2>
+              <ul class="clean">
+                <li><strong>Space heater</strong> — assigned to you</li>
+                <li><strong>PC / Monitor</strong> — assigned to Sam</li>
+                <li><strong>Fridge & lights</strong> — shared between all</li>
+              </ul>
+            </div>
+          </div>
+
+          <div>
+            <div class="card">
+              <h2>What testers should focus on</h2>
+              <ul class="clean">
+                <li>Does the idea of per-device tracking feel clear?</li>
+                <li>Is it obvious which bits are shared vs private?</li>
+                <li>Would this view reduce arguments over bills?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
-</header>
 
-<main>
-  <!-- Explainer -->
-  <section id="explainer" class="active">
-    <div class="hero">
-      <div>
-        <div class="kicker">Fair energy for shared homes</div>
-        <h1 style="margin:0 0 8px">Pay only for the power you use.</h1>
-        <p class="muted">This is a polished version of the wireframe so markers can click through the full flow without back‑end code.</p>
-        <div class="row">
-          <a class="btn primary" href="#storefront">Get Starter Kit</a>
-          <a class="btn" href="#dashboard">Open Dashboard</a>
-        </div>
-      </div>
-      <div class="fake" aria-label="preview"></div>
-    </div>
-  </section>
+  <script>
+    function goTo(id) {
+      document.querySelectorAll('main section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('header nav a').forEach(a => {
+        a.classList.toggle('active', a.dataset.target === id);
+      });
+    }
 
-  <!-- Storefront -->
-  <section id="storefront">
-    <div class="grid">
-      <div class="card">
-        <h2>Starter Kit</h2>
-        <p class="muted">4 smart plugs + mains clamp + app demo. Good for a 3–5 person house.</p>
-        <div class="row">
-          <button class="btn primary" id="addToCart">Add to cart</button>
-          <button class="btn" id="viewCart">View cart (0)</button>
-          <button class="btn secondary" id="checkout">Checkout</button>
-        </div>
-      </div>
-      <div class="aside">
-        <div class="card">
-          <h2>Cart</h2>
-          <div id="cartBox" class="muted">Your cart is empty.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Helpdesk -->
-  <section id="helpdesk">
-    <div class="card">
-      <h2>Helpdesk</h2>
-      <p class="muted">Setup videos · FAQs · Warranty · Returns</p>
-      <div class="row"><button class="btn" onclick="openModal('contact')">Contact support</button></div>
-    </div>
-  </section>
-
-  <!-- Account -->
-  <section id="account">
-    <div class="grid">
-      <div class="card">
-        <h2>Create account</h2>
-        <div class="row"><input id="name" type="text" placeholder="Name"/><input id="email" type="text" placeholder="Email"/></div>
-        <div class="row" style="margin-top:8px"><button class="btn primary" id="createAcc">Create</button></div>
-      </div>
-      <div class="aside">
-        <div class="card">
-          <h2>Login</h2>
-          <div class="row"><input id="login" type="text" placeholder="Email"/></div>
-          <div class="row" style="margin-top:8px"><button class="btn secondary" id="loginBtn">Login</button></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Dashboard -->
-  <section id="dashboard">
-    <div class="row" style="margin-bottom:12px">
-      <div class="row">
-        <label class="muted">Property:&nbsp;</label>
-        <select id="property"></select>
-      </div>
-      <button class="btn" id="addDeviceBtn">Add device</button>
-    </div>
-
-    <div class="grid">
-      <div>
-        <div class="card">
-          <h2>Your share this month <span class="muted" style="float:right">£<span id="myShare">36.80</span></span></h2>
-          <div class="muted">People & amounts</div>
-          <div class="progress"><div class="fill" id="fill"></div><div class="marker"></div></div>
-          <div class="muted" style="margin-top:6px">Last month vs now: <span id="delta">+£3.20</span></div>
-          <div class="row" style="margin-top:8px"><button class="btn primary" id="settle">Settle up</button></div>
-        </div>
-
-        <div class="card">
-          <h2>Device insights</h2>
-          <ul id="devices" class="clean"></ul>
-        </div>
-      </div>
-
-      <div class="aside">
-        <div class="card">
-          <h2>Energy coach</h2>
-          <p id="tip" class="muted">Reduce heater to 19–20°C. Estimated saving: £4.50/mo.</p>
-          <button class="btn warn" id="applyTip">Apply tip</button>
-        </div>
-        <div class="card">
-          <h2>Household</h2>
-          <ul id="people" class="clean"></ul>
-          <button class="btn secondary" id="invite">Invite member</button>
-        </div>
-        <div class="card">
-          <h2>Export</h2>
-          <button class="btn" id="exportCsv">Export CSV</button>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
-
-<!-- Modal -->
-<div class="backdrop" id="backdrop">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
-    <h3 id="mTitle">Modal</h3>
-    <div id="mBody" class="muted">Body</div>
-    <div class="actions">
-      <button class="btn" onclick="closeModal()">Close</button>
-      <button class="btn primary" id="mOk">OK</button>
-    </div>
-  </div>
-</div>
-
-<script>
-  // Simple state
-  const state = {
-    cart:0,
-    properties:[{id:'p1',name:'Flat 12, King Street'}],
-    active:'p1',
-    people:[{id:'u1',name:'You'},{id:'u2',name:'Sam'},{id:'u3',name:'Riley'}],
-    devices:[
-      {id:'d1',name:'Space heater',owner:'u1',shared:false,kwh:42},
-      {id:'d2',name:'PC / Monitor',owner:'u2',shared:false,kwh:20},
-      {id:'d3',name:'Fridge / Lights',owner:'shared',shared:true,kwh:30}
-    ],
-    myShare:36.80, prev:33.60
-  };
-
-  // Router
-  function setActive(hash){
-    if(!hash) hash='#explainer';
-    document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
-    const nav = document.querySelector('#nav-'+hash.replace('#',''));
-    if(nav) nav.classList.add('active');
-    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-    const sec = document.querySelector(hash);
-    if(sec) sec.classList.add('active');
-    if(hash==='#dashboard') renderDashboard();
-  }
-  window.addEventListener('hashchange',()=>setActive(location.hash));
-  setActive(location.hash);
-
-  // Storefront
-  document.getElementById('addToCart').onclick=()=>{
-    state.cart++; document.getElementById('viewCart').textContent='View cart ('+state.cart+')';
-    document.getElementById('cartBox').textContent=state.cart+' × Starter Kit';
-  };
-  document.getElementById('checkout').onclick=()=>openModal('checkout');
-  document.getElementById('viewCart').onclick=()=>openModal('cart');
-
-  // Account
-  document.getElementById('createAcc').onclick=()=>{ location.hash='#dashboard'; alert('Account created (demo).'); };
-  document.getElementById('loginBtn').onclick=()=>{ location.hash='#dashboard'; alert('Logged in (demo).'); };
-
-  // Dashboard render
-  function renderDashboard(){
-    const sel=document.getElementById('property');
-    sel.innerHTML=state.properties.map(p=>`<option value="${p.id}" ${p.id===state.active?'selected':''}>${p.name}</option>`).join('');
-    document.getElementById('myShare').textContent=state.myShare.toFixed(2);
-    const pct=Math.min(100,Math.max(5,(state.myShare/60)*100));
-    document.getElementById('fill').style.width=pct+'%';
-    const d=state.myShare-state.prev;
-    document.getElementById('delta').textContent=(d>=0?'+':'')+'£'+Math.abs(d).toFixed(2);
-    // devices
-    const ul=document.getElementById('devices'); ul.innerHTML='';
-    state.devices.forEach(dv=>{
-      const who=dv.shared?'Shared':(state.people.find(p=>p.id===dv.owner)||{}).name||'—';
-      const li=document.createElement('li'); li.style.margin='6px 0';
-      li.textContent = `${dv.name} — ${dv.kwh} kWh · ${who}`;
-      ul.appendChild(li);
+    document.querySelectorAll('header nav a').forEach(a => {
+      a.addEventListener('click', () => goTo(a.dataset.target));
     });
-    // people
-    const ppl=document.getElementById('people'); ppl.innerHTML='';
-    state.people.forEach(p=>{ const li=document.createElement('li'); li.textContent=p.name; ppl.appendChild(li); });
-  }
-  renderDashboard();
-
-  // Actions
-  document.getElementById('settle').onclick=()=>openModal('settle');
-  document.getElementById('applyTip').onclick=()=>{ state.myShare = Math.max(0,state.myShare-4.5); renderDashboard(); alert('Tip applied (demo).'); };
-  document.getElementById('addDeviceBtn').onclick=()=>openModal('addDevice');
-  document.getElementById('invite').onclick=()=>openModal('invite');
-  document.getElementById('exportCsv').onclick=()=>{
-    const rows=[['Person','Amount (£)'],...state.people.map(p=>[p.name,(Math.random()*30+10).toFixed(2)])];
-    const csv=rows.map(r=>r.join(',')).join('\\n');
-    const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob);
-    const a=document.createElement('a'); a.href=url; a.download='PowerSplit_statement.csv'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1500);
-  };
-
-  // Modal
-  const bd=document.getElementById('backdrop'), title=document.getElementById('mTitle'), body=document.getElementById('mBody'), ok=document.getElementById('mOk');
-  function closeModal(){ bd.style.display='none'; }
-  function openModal(kind){
-    bd.style.display='flex'; ok.onclick=closeModal;
-    if(kind==='checkout'){ title.textContent='Checkout (demo)'; body.textContent='No payment in this prototype.'; }
-    if(kind==='cart'){ title.textContent='Cart'; body.textContent= (state.cart||0)+' × Starter Kit'; }
-    if(kind==='settle'){ title.textContent='Settle up'; body.textContent='Mark this month as paid (demo).'; }
-    if(kind==='invite'){
-      const code=Math.random().toString(36).slice(2,8).toUpperCase();
-      title.textContent='Invite member'; body.innerHTML='Share code: <strong>'+code+'</strong>';
-    }
-    if(kind==='addDevice'){
-      title.textContent='Add device';
-      const peopleOpts=state.people.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
-      body.innerHTML=`<input id="dvName" type="text" placeholder="Device name" style="width:100%;margin:6px 0" class="btn">
-      <div><span id="priv" class="pill active">Private</span><span id="sh" class="pill">Shared</span></div>
-      <div id="ownerWrap" class="row" style="margin-top:6px"><label>Owner:&nbsp;</label><select id="dvOwner" class="btn">${peopleOpts}</select></div>`;
-      setTimeout(()=>{
-        const priv=document.getElementById('priv'), sh=document.getElementById('sh');
-        priv.onclick=()=>{ priv.classList.add('active'); sh.classList.remove('active'); document.getElementById('ownerWrap').style.display='flex'; };
-        sh.onclick=()=>{ sh.classList.add('active'); priv.classList.remove('active'); document.getElementById('ownerWrap').style.display='none'; };
-      },0);
-      ok.textContent='Add'; ok.onclick=()=>{
-        const name=document.getElementById('dvName').value.trim()||'New device';
-        const shared=document.getElementById('sh').classList.contains('active');
-        const owner= shared ? 'shared' : (document.getElementById('dvOwner').value);
-        state.devices.push({id:'d'+(state.devices.length+1),name,owner,shared,kwh:Math.floor(Math.random()*25)+5});
-        closeModal(); renderDashboard();
-      };
-    }
-    if(kind==='contact'){ title.textContent='Contact support'; body.textContent='help@powersplit.example'; }
-  }
-</script>
+  </script>
 </body>
 </html>
